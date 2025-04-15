@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Modulo GPS Precompilato</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      text-align: center;
+      padding: 2em;
+      color: #333;
+    }
+    .card {
+      background: white;
+      padding: 2em;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: auto;
+    }
+    .loading {
+      color: #2980b9;
+    }
+    .error {
+      color: #e74c3c;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Generazione Modulo Precompilato</h2>
+    <p class="loading" id="status">Sto cercando la tua posizione...</p>
+  </div>
+
+  <script>
+    const formBaseUrl = "https://docs.google.com/forms/d/e/1FAIpQLSefwDwRAc8fJBECFiz1MfR9nazBANQGT_i8JKB5uH_zXr4qWg/viewform";
+    const latField = "entry.564083252";
+    const lonField = "entry.1574647340";
+
+    const statusEl = document.getElementById("status");
+
+    navigator.geolocation.getCurrentPosition(function(position) {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+
+      const fullUrl = `${formBaseUrl}?usp=pp_url&${latField}=${lat}&${lonField}=${lon}`;
+      window.location.href = fullUrl;
+    }, function(error) {
+      statusEl.className = "error";
+      statusEl.textContent = "Errore: impossibile ottenere la posizione GPS.";
+    });
+  </script>
+</body>
+</html>
